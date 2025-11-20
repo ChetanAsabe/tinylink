@@ -1,10 +1,10 @@
 import { sql } from "@/lib/db";
 import { generateUniqueSlug, isValidUrl } from "@/lib/url";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { url } = await request.json();
 
