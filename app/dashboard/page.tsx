@@ -2,7 +2,7 @@ import { Header } from "../components/header";
 import { TableComponent } from "../components/table";
 
 
-export function Dashboard() {
+export default function Dashboard() {
 
     return (
         <div className="p-4 w-full flex flex-col items-center justify-center min-h-screen bg-gray-50">
