@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Eye, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
 interface URL {
     id: number;
@@ -32,6 +34,7 @@ interface TableState {
 }
 
 export function TableComponent() {
+    const router = useRouter();
     const [state, setState] = useState<TableState>({
         data: [],
         loading: true,
@@ -71,9 +74,9 @@ export function TableComponent() {
         fetchData();
     }, [fetchData]);
 
-    const handleSelectURL = useCallback((slug: string) => {
-        window.location.href = `/code/${slug}`;
-    }, []);
+    const handleSelectURL = (slug: string) => {
+        router.push(`/code/${slug}`);
+    };
 
     const handleDeleteClick = useCallback((slug: string) => {
         setState((prev) => ({ ...prev, selectedForDelete: slug }));
@@ -159,26 +162,13 @@ export function TableComponent() {
 
                     <TableBody>
                         {state.loading
-                            ? Array.from({ length: 5 }).map((_, i) => (
-                                <TableRow key={`skeleton-${i}`}>
-                                    <TableCell>
-                                        <div className="h-4 w-10 rounded bg-gray-200 animate-pulse" />
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-4 w-32 rounded bg-gray-200 animate-pulse" />
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-4 w-full rounded bg-gray-200 animate-pulse" />
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-4 w-8 rounded bg-gray-200 animate-pulse" />
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-4 w-40 rounded bg-gray-200 animate-pulse" />
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-4 w-20 rounded bg-gray-200 animate-pulse" />
-                                    </TableCell>
+                            ? Array.from({ length: 5 }).map((_, rowIndex) => (
+                                <TableRow key={`skeleton-${rowIndex}`}>
+                                    {Array.from({ length: 6 }).map((_, colIndex) => (
+                                        <TableCell key={`cell-${rowIndex}-${colIndex}`}>
+                                            <Skeleton className="h-4 w-full rounded-full !bg-gray-300" />
+                                        </TableCell>
+                                    ))}
                                 </TableRow>
                             ))
                             : state.data.length === 0
